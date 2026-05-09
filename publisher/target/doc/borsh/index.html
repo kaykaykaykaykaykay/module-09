@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Crate features"><title>borsh - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="borsh" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0 (4a4ef493e 2026-03-02)" data-channel="1.94.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Crate borsh</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../borsh/index.html">borsh</a><span class="version">1.6.1</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#crate-features" title="Crate features">Crate features</a><ul><li><a href="#ecosystem-features" title="Ecosystem features">Ecosystem features</a></li><li><a href="#default-features" title="Default features">Default features</a></li><li><a href="#other-features" title="Other features">Other features</a></li><li><a href="#config-aliases" title="Config aliases">Config aliases</a></li></ul></li><li><a href="#shortcuts" title="Shortcuts">Shortcuts</a></li></ul><h3><a href="#reexports">Crate Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>borsh</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/borsh/lib.rs.html#1-86">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="crate-features"><a class="doc-anchor" href="#crate-features">§</a>Crate features</h2><h4 id="ecosystem-features"><a class="doc-anchor" href="#ecosystem-features">§</a>Ecosystem features</h4>
+<ul>
+<li>
+<p><strong>std</strong> -
+When enabled, <code>borsh</code> uses the standard library. Disabling this feature will
+result in building the crate in <code>no_std</code> environment.</p>
+<p>To carter such builds, Borsh offers <a href="io/index.html" title="mod borsh::io"><code>io</code></a> module which includes a items which
+are used in <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize"><code>BorshSerialize</code></a> and <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize"><code>BorshDeserialize</code></a> traits.  Most notably
+<code>io::Read</code>, <code>io::Write</code> and <code>io::Result</code>.</p>
+<p>When <strong>std</strong> feature is enabled, those items are re-exports of corresponding
+<code>std::io</code> items.  Otherwise they are borsh-specific types which mimic
+behaviour of corresponding standard types.</p>
+</li>
+</ul>
+<h4 id="default-features"><a class="doc-anchor" href="#default-features">§</a>Default features</h4>
+<ul>
+<li><strong>std</strong> - enabled by default.</li>
+</ul>
+<h4 id="other-features"><a class="doc-anchor" href="#other-features">§</a>Other features</h4>
+<ul>
+<li>
+<p><strong>derive</strong> -
+Gates derive macros of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a> and
+<a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a> traits.</p>
+</li>
+<li>
+<p><strong>unstable__schema</strong> -
+Gates [BorshSchema] trait and its derive macro.
+Gates [schema] module.
+This feature requires <strong>derive</strong> to be enabled too.</p>
+</li>
+<li>
+<p><strong>rc</strong> -
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a> and <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>
+for <a href="https://doc.rust-lang.org/1.94.0/alloc/rc/struct.Rc.html" title="struct alloc::rc::Rc"><code>Rc&lt;T&gt;</code></a>/<a href="https://doc.rust-lang.org/1.94.0/alloc/sync/struct.Arc.html" title="struct alloc::sync::Arc"><code>Arc&lt;T&gt;</code></a> respectively.
+In <code>no_std</code> setting <code>Rc</code>/<code>Arc</code> are pulled from <code>alloc</code> crate.
+Serializing and deserializing these types
+does not preserve identity and may result in multiple copies of the same data.
+Be sure that this is what you want before enabling this feature.</p>
+</li>
+<li>
+<p><strong>hashbrown</strong> -
+Pulls in <a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>/<a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/set/struct.HashSet.html" title="struct std::collections::hash::set::HashSet">HashSet</a> when no <code>std</code> is available.
+This feature is set to be mutually exclusive with <strong>std</strong> feature.</p>
+</li>
+<li>
+<p><strong>bytes</strong> -
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a> and <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>
+for <a href="https://docs.rs/bytes/1.5.0/bytes/struct.Bytes.html">Bytes</a> and <a href="https://docs.rs/bytes/1.5.0/bytes/struct.BytesMut.html">BytesMut</a>.
+In <code>no_std</code> builds this keeps <code>bytes</code> in <code>no_std</code> mode; when <strong>std</strong> is enabled,
+<code>bytes/std</code> is enabled as well.</p>
+</li>
+<li>
+<p><strong>bson</strong> -
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a> and <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>
+for <a href="https://docs.rs/bson/2.9.0/bson/oid/struct.ObjectId.html">ObjectId</a>.</p>
+</li>
+<li>
+<p><strong>indexmap</strong> -
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a> and <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>
+for <a href="https://docs.rs/indexmap/2.8.0/indexmap/map/struct.IndexMap.html">indexmap::IndexMap</a> and <a href="https://docs.rs/indexmap/2.8.0/indexmap/set/struct.IndexSet.html">IndexSet</a></p>
+</li>
+<li>
+<p><strong>ascii</strong> -
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a>, <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>, [BorshSchema] for
+types from <a href="https://docs.rs/ascii/1.1.0/ascii/">ascii</a> crate.</p>
+</li>
+<li>
+<p><strong>de_strict_order</strong> -
+Enables check that keys, parsed during deserialization of
+<a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>/<a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/set/struct.HashSet.html" title="struct std::collections::hash::set::HashSet">HashSet</a> and
+<a href="https://doc.rust-lang.org/1.94.0/alloc/collections/btree/set/struct.BTreeSet.html" title="struct alloc::collections::btree::set::BTreeSet">BTreeSet</a>/<a href="https://doc.rust-lang.org/1.94.0/alloc/collections/btree/map/struct.BTreeMap.html" title="struct alloc::collections::btree::map::BTreeMap">BTreeMap</a>
+are encountered in ascending order with respect to <a href="https://doc.rust-lang.org/1.94.0/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a> for hash collections,
+and <a href="https://doc.rust-lang.org/1.94.0/core/cmp/trait.Ord.html" title="trait core::cmp::Ord">Ord</a> for btree ones. Deserialization emits error otherwise.</p>
+<p>If this feature is not enabled, it is possible that two different byte slices could deserialize into the same <code>HashMap</code>/<code>HashSet</code> object.</p>
+</li>
+</ul>
+<h4 id="config-aliases"><a class="doc-anchor" href="#config-aliases">§</a>Config aliases</h4>
+<ul>
+<li><strong>hash_collections</strong> -
+This is a feature alias, set up in <code>build.rs</code> to be equivalent to (<strong>std</strong> OR <strong>hashbrown</strong>).
+Gates implementation of <a href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a>, <a href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>
+and [BorshSchema]
+for <a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>/<a href="https://doc.rust-lang.org/1.94.0/std/collections/hash/set/struct.HashSet.html" title="struct std::collections::hash::set::HashSet">HashSet</a>.</li>
+</ul>
+<h2 id="shortcuts"><a class="doc-anchor" href="#shortcuts">§</a>Shortcuts</h2>
+<p>Following pages are highlighted here just to give reader a chance at learning that
+they exist.</p>
+<ul>
+<li><a href="macro@crate::BorshSerialize">Derive Macro <code>BorshSerialize</code></a></li>
+<li><a href="macro@crate::BorshDeserialize">Derive Macro <code>BorshDeserialize</code></a></li>
+<li><a href="macro@crate::BorshSchema">Derive Macro <code>BorshSchema</code></a></li>
+</ul>
+</div></details><h2 id="reexports" class="section-header">Re-exports<a href="#reexports" class="anchor">§</a></h2><dl class="item-table reexports"><dt id="reexport.BorshDeserialize"><code>pub use de::<a class="trait" href="de/trait.BorshDeserialize.html" title="trait borsh::de::BorshDeserialize">BorshDeserialize</a>;</code></dt><dt id="reexport.from_reader"><code>pub use de::<a class="fn" href="de/fn.from_reader.html" title="fn borsh::de::from_reader">from_reader</a>;</code></dt><dt id="reexport.from_slice"><code>pub use de::<a class="fn" href="de/fn.from_slice.html" title="fn borsh::de::from_slice">from_slice</a>;</code></dt><dt id="reexport.BorshSerialize"><code>pub use ser::<a class="trait" href="ser/trait.BorshSerialize.html" title="trait borsh::ser::BorshSerialize">BorshSerialize</a>;</code></dt></dl><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="de/index.html" title="mod borsh::de">de</a></dt><dt><a class="mod" href="error/index.html" title="mod borsh::error">error</a></dt><dt><a class="mod" href="io/index.html" title="mod borsh::io">io</a></dt><dd>Subset of <code>std::io</code> which is used as part of borsh public API.</dd><dt><a class="mod" href="ser/index.html" title="mod borsh::ser">ser</a></dt></dl><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><dl class="item-table"><dt><a class="fn" href="fn.object_length.html" title="fn borsh::object_length">object_<wbr>length</a></dt><dd>Serializes an object without allocation to compute and return its length</dd><dt><a class="fn" href="fn.to_vec.html" title="fn borsh::to_vec">to_vec</a></dt><dd>Serialize an object into a vector of bytes.</dd><dt><a class="fn" href="fn.to_writer.html" title="fn borsh::to_writer">to_<wbr>writer</a></dt><dd>Serializes an object directly into a <code>Writer</code>.</dd></dl></section></div></main></body></html>

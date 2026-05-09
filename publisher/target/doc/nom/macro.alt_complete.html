@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Is equivalent to the `alt!` combinator, except that it will not return `Incomplete` when one of the constituting parsers returns `Incomplete`. Instead, it will try the next alternative in the chain."><title>alt_complete in nom - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="nom" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0 (4a4ef493e 2026-03-02)" data-channel="1.94.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">alt_complete</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../nom/index.html">nom</a><span class="version">4.2.3</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">nom</a></div><h1>Macro <span class="macro">alt_<wbr>complete</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/nom/branch.rs.html#281-360">Source</a> </span></div><pre class="rust item-decl"><code>macro_rules! alt_complete {
+    ($i:expr, $e:path | $($rest:tt)*) =&gt; { ... };
+    ($i:expr, $subrule:ident!( $($args:tt)*) | $($rest:tt)*) =&gt; { ... };
+    ($i:expr, $subrule:ident!( $($args:tt)* ) =&gt; { $gen:expr } | $($rest:tt)+) =&gt; { ... };
+    ($i:expr, $e:path =&gt; { $gen:expr } | $($rest:tt)*) =&gt; { ... };
+    ($i:expr, $e:path =&gt; { $gen:expr }) =&gt; { ... };
+    ($i:expr, $subrule:ident!( $($args:tt)* ) =&gt; { $gen:expr }) =&gt; { ... };
+    ($i:expr, $e:path) =&gt; { ... };
+    ($i:expr, $subrule:ident!( $($args:tt)*)) =&gt; { ... };
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Is equivalent to the <code>alt!</code> combinator, except that it will not return <code>Incomplete</code>
+when one of the constituting parsers returns <code>Incomplete</code>. Instead, it will try the
+next alternative in the chain.</p>
+<p>You should use this combinator only if you know you
+will not receive partial input for the rules you’re trying to match (this
+is almost always the case for parsing programming languages).</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">alt_complete!</span>(I -&gt; IResult&lt;I,O&gt; | I -&gt; IResult&lt;I,O&gt; | ... | I -&gt; IResult&lt;I,O&gt; ) =&gt; I -&gt; IResult&lt;I, O&gt;</code></pre></div>
+<p>All the parsers must have the same return type.</p>
+<p>If one of the parsers return <code>Incomplete</code>, <code>alt_complete!</code> will try the next alternative.
+If there is no other parser left to try, an <code>Error</code> will be returned.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">alt_complete!</span>(parser_1 | parser_2 | ... | parser_n)</code></pre></div>
+<p><strong>For more in depth examples, refer to the documentation of <code>alt!</code></strong></p>
+</div></details></section></div></main></body></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Makes a function from a parser combination"><title>named in nom - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="nom" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0 (4a4ef493e 2026-03-02)" data-channel="1.94.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">named</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../nom/index.html">nom</a><span class="version">4.2.3</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">nom</a></div><h1>Macro <span class="macro">named</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/nom/macros.rs.html#98-182">Source</a> </span></div><pre class="rust item-decl"><code>macro_rules! named {
+    (#$($args:tt)*) =&gt; { ... };
+    ($name:ident( $i:ty ) -&gt; $o:ty, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    ($name:ident&lt;$i:ty,$o:ty,$e:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    ($name:ident&lt;$i:ty,$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    ($name:ident&lt;$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    ($name:ident, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub $name:ident( $i:ty ) -&gt; $o:ty, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub $name:ident&lt;$i:ty,$o:ty,$e:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub $name:ident&lt;$i:ty,$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub $name:ident&lt;$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub $name:ident, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub(crate) $name:ident( $i:ty ) -&gt; $o:ty, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub(crate) $name:ident&lt;$i:ty,$o:ty,$e:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub(crate) $name:ident&lt;$i:ty,$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub(crate) $name:ident&lt;$o:ty&gt;, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+    (pub(crate) $name:ident, $submac:ident!( $($args:tt)* )) =&gt; { ... };
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Makes a function from a parser combination</p>
+<p>The type can be set up if the compiler needs
+more information</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">named!</span>(my_function( <span class="kw-2">&amp;</span>[u8] ) -&gt; <span class="kw-2">&amp;</span>[u8], <span class="macro">tag!</span>(<span class="string">"abcd"</span>));
+<span class="comment">// first type parameter is input, second is output
+</span><span class="macro">named!</span>(my_function&lt;<span class="kw-2">&amp;</span>[u8], <span class="kw-2">&amp;</span>[u8]&gt;,     <span class="macro">tag!</span>(<span class="string">"abcd"</span>));
+<span class="comment">// will have &amp;[u8] as input type, &amp;[u8] as output type
+</span><span class="macro">named!</span>(my_function,                   <span class="macro">tag!</span>(<span class="string">"abcd"</span>));
+<span class="comment">// will use &amp;[u8] as input type (use this if the compiler
+// complains about lifetime issues
+</span><span class="macro">named!</span>(my_function&lt;<span class="kw-2">&amp;</span>[u8]&gt;,            <span class="macro">tag!</span>(<span class="string">"abcd"</span>));
+<span class="comment">// prefix them with 'pub' to make the functions public
+</span><span class="macro">named!</span>(<span class="kw">pub </span>my_function,               <span class="macro">tag!</span>(<span class="string">"abcd"</span>));
+<span class="comment">// prefix them with 'pub(crate)' to make the functions public within the crate
+</span><span class="macro">named!</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) my_function,               <span class="macro">tag!</span>(<span class="string">"abcd"</span>));</code></pre></div></div></details></section></div></main></body></html>

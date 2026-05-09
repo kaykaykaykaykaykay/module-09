@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BlockParam","Parameter","TemplateElement"],"struct":["DirectiveTemplate","ExpressionSpec","HelperTemplate","Subexpression","Template","TemplateMapping"]};

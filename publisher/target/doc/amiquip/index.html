@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="amiquip is a RabbitMQ client written in pure Rust."><title>amiquip - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="amiquip" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0 (4a4ef493e 2026-03-02)" data-channel="1.94.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Crate amiquip</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../amiquip/index.html">amiquip</a><span class="version">0.4.2</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#examples" title="Examples">Examples</a></li><li><a href="#design-details" title="Design Details">Design Details</a><ul><li><a href="#thread-support" title="Thread Support">Thread Support</a></li></ul></li><li><a href="#unsupported-features" title="Unsupported Features">Unsupported Features</a></li></ul><h3><a href="#structs">Crate Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#enums" title="Enums">Enums</a></li><li><a href="#traits" title="Traits">Traits</a></li><li><a href="#types" title="Type Aliases">Type Aliases</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>amiquip</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/amiquip/lib.rs.html#1-217">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>amiquip is a RabbitMQ client written in pure Rust.</p>
+<p>amiquip supports most features of the AMQP spec and some RabbitMQ extensions (see a list of
+<a href="#unsupported-features">currently unsupported features</a> below). It aims to be robust: problems
+on a channel or connection should lead to a relevant <a href="enum.Error.html">error</a> being raised.
+Most errors, however, do result in effectively killing the channel or connection on which they
+occur.</p>
+<p>TLS support is enabled by default via the <a href="https://crates.io/crates/native-tls">native-tls</a>
+crate. To enable disable TLS support at build time, disable amiquip’s default features:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+amiquip = { version = &quot;0.4&quot;, default-features = false }</code></pre></div>
+<p>If you disable TLS support, the methods <code>Connection::open</code>, <code>Connection::open_tuned</code>, and
+<code>Connection::open_tls_stream</code> will no longer be available, as all three only allow secure
+connections. The methods <code>Connection::insecure_open</code>, <code>Connection::insecure_open_tuned</code>, and
+<code>Connection::insecure_open_stream</code> will still be available, as these methods support
+unencrypted connections.</p>
+<h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<p>A “hello world” publisher:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>amiquip::{Connection, Exchange, Publish, <span class="prelude-ty">Result</span>};
+
+<span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="comment">// Open connection.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>connection = Connection::insecure_open(<span class="string">"amqp://guest:guest@localhost:5672"</span>)<span class="question-mark">?</span>;
+
+    <span class="comment">// Open a channel - None says let the library choose the channel ID.
+    </span><span class="kw">let </span>channel = connection.open_channel(<span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+
+    <span class="comment">// Get a handle to the direct exchange on our channel.
+    </span><span class="kw">let </span>exchange = Exchange::direct(<span class="kw-2">&amp;</span>channel);
+
+    <span class="comment">// Publish a message to the "hello" queue.
+    </span>exchange.publish(Publish::new(<span class="string">"hello there"</span>.as_bytes(), <span class="string">"hello"</span>))<span class="question-mark">?</span>;
+
+    connection.close()
+}</code></pre></div>
+<p>A corresponding “hello world” consumer:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Port of https://www.rabbitmq.com/tutorials/tutorial-one-python.html. Run this
+// in one shell, and run the hello_world_publish example in another.
+</span><span class="kw">use </span>amiquip::{Connection, ConsumerMessage, ConsumerOptions, QueueDeclareOptions, <span class="prelude-ty">Result</span>};
+
+<span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="comment">// Open connection.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>connection = Connection::insecure_open(<span class="string">"amqp://guest:guest@localhost:5672"</span>)<span class="question-mark">?</span>;
+
+    <span class="comment">// Open a channel - None says let the library choose the channel ID.
+    </span><span class="kw">let </span>channel = connection.open_channel(<span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+
+    <span class="comment">// Declare the "hello" queue.
+    </span><span class="kw">let </span>queue = channel.queue_declare(<span class="string">"hello"</span>, QueueDeclareOptions::default())<span class="question-mark">?</span>;
+
+    <span class="comment">// Start a consumer.
+    </span><span class="kw">let </span>consumer = queue.consume(ConsumerOptions::default())<span class="question-mark">?</span>;
+    <span class="macro">println!</span>(<span class="string">"Waiting for messages. Press Ctrl-C to exit."</span>);
+
+    <span class="kw">for </span>(i, message) <span class="kw">in </span>consumer.receiver().iter().enumerate() {
+        <span class="kw">match </span>message {
+            ConsumerMessage::Delivery(delivery) =&gt; {
+                <span class="kw">let </span>body = String::from_utf8_lossy(<span class="kw-2">&amp;</span>delivery.body);
+                <span class="macro">println!</span>(<span class="string">"({:&gt;3}) Received [{}]"</span>, i, body);
+                consumer.ack(delivery)<span class="question-mark">?</span>;
+            }
+            other =&gt; {
+                <span class="macro">println!</span>(<span class="string">"Consumer ended: {:?}"</span>, other);
+                <span class="kw">break</span>;
+            }
+        }
+    }
+
+    connection.close()
+}</code></pre></div>
+<p>Both of these examples are ports of the <a href="https://www.rabbitmq.com/tutorials/tutorial-one-python.html">RabbitMQ Hello World
+tutorial</a>. Additional examples,
+including ports of the other tutorials from that series, <a href="https://github.com/jgallagher/amiquip/tree/master/examples">are also
+available</a>.</p>
+<h2 id="design-details"><a class="doc-anchor" href="#design-details">§</a>Design Details</h2>
+<p>When a <a href="struct.Connection.html">connection</a> is opened, a thread is created to manage all reads
+and writes on the socket. Other documentation and code refers to this as the “I/O thread”. Each
+connection has exactly one I/O thread. The I/O thread uses <a href="https://crates.io/crates/mio">mio</a>
+to drive nonblocking connection. The connection handle and other related handles (particularly
+<a href="struct.Channel.html">channels</a>) communicate with the I/O thread via <a href="https://crates.io/crates/mio_extras">mio sync
+channels</a> (to the I/O thread) and <a href="https://crates.io/crates/crossbeam-channel">crossbeam
+channels</a> (from the I/O thread).</p>
+<p>Heartbeats are entirely managed by the I/O thread; if heartbeats are enabled and the I/O thread
+fails to receive communication from the server for too long, it will close the connection.</p>
+<p>amiquip uses the <a href="https://crates.io/crates/log">log</a> crate internally. At the <code>trace</code> log
+level, amiquip is quite noisy, but this may be valuable in debugging connection problems.</p>
+<h3 id="thread-support"><a class="doc-anchor" href="#thread-support">§</a>Thread Support</h3>
+<p>A <a href="struct.Connection.html"><code>Connection</code></a> is effectively bound to a single thread (it
+technically implements both <code>Send</code> and <code>Sync</code>, but most relevant methods take <code>&amp;mut self</code>). A
+connection can open many <a href="struct.Channel.html"><code>Channel</code></a>s; a channel can only be used by a
+single thread (it implements <code>Send</code> but not <code>Sync</code>). There is no tie between a connection and
+its channels at the type system level; if the connection is closed (either intentionally or
+because of an error), all the channels that it opened will end up returning errors shortly
+thereafter. See the discussion on <a href="struct.Connection.html#method.close"><code>Connection::close</code></a>
+for a bit more information about that.</p>
+<p>A channel is able to produce other handles (<a href="struct.Queue.html">queues</a>,
+<a href="struct.Exchange.html">exchanges</a>, and <a href="struct.Consumer.html">consumers</a>). These are mostly
+thin convenience wrappers around the channel, and they do hold a reference back to the channel
+that created them. This means if you want to use the connection to open a channel on one thread
+then move it to another thread to do work, you will need to declare queues, exchanges, and
+consumers from the thread where work will be done; e.g.,</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>amiquip::{Connection, QueueDeclareOptions, ConsumerOptions, <span class="prelude-ty">Result</span>};
+<span class="kw">use </span>std::thread;
+
+<span class="kw">fn </span>run_connection(<span class="kw-2">mut </span>connection: Connection) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">let </span>channel = connection.open_channel(<span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+
+    <span class="comment">// Declaring the queue outside the thread spawn will fail, as it cannot
+    // be moved into the thread. Instead, wait to declare until inside the new thread.
+
+    // Would fail:
+    // let queue = channel.queue_declare("hello", QueueDeclareOptions::default())?;
+    </span>thread::spawn(<span class="kw">move </span>|| -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="comment">// Instead, declare once the channel is moved into this thread.
+        </span><span class="kw">let </span>queue = channel.queue_declare(<span class="string">"hello"</span>, QueueDeclareOptions::default())<span class="question-mark">?</span>;
+        <span class="kw">let </span>consumer = queue.consume(ConsumerOptions::default())<span class="question-mark">?</span>;
+        <span class="kw">for </span>message <span class="kw">in </span>consumer.receiver().iter() {
+            <span class="comment">// do something with message...
+        </span>}
+        <span class="prelude-val">Ok</span>(())
+    });
+
+    <span class="comment">// do something to keep the connection open; if we drop the connection here,
+    // it will be closed, killing the channel that we just moved into a new thread
+</span>}</code></pre></div><h2 id="unsupported-features"><a class="doc-anchor" href="#unsupported-features">§</a>Unsupported Features</h2>
+<ul>
+<li>Connection recovery. If something goes wrong with a connection, it will be torn down, and
+errors will be returned from calls on the connection and any other handles (channels,
+consumers, etc.). A connection recovery strategy could be implemented on top of amiquip.</li>
+<li>Channel-level flow control. RabbitMQ, as of version 3.7.14 in March 2019, <a href="https://www.rabbitmq.com/specification.html#rules">does not
+support</a> clients requesting channel flow
+control, and it does not send channel flow control messages to clients (using TCP backpressure
+instead).</li>
+<li>Setting up a <a href="struct.Consumer.html"><code>Consumer</code></a> with a user-provided consumer tag. If this is
+something you need, please <a href="https://github.com/jgallagher/amiquip/issues">file an issue</a>.</li>
+<li><code>nowait</code> variants of <a href="struct.Queue.html#method.consume"><code>Queue::consume</code></a> and
+<a href="struct.Consumer.html#method.cancel"><code>Consumer::cancel</code></a>. It is unlikely support for these will
+be added, as the synchronous versions are used to set up internal channels for consumer
+messages.</li>
+<li><code>nowait</code> variant of <a href="struct.Channel.html#method.recover"><code>Channel::recover</code></a>. The
+asynchronous version of <code>recover</code> is marked as deprecated in RabbitMQ’s AMQP reference.</li>
+</ul>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.AmqpProperties.html" title="struct amiquip::AmqpProperties">Amqp<wbr>Properties</a></dt><dd>basic properties (Generated)</dd><dt><a class="struct" href="struct.Channel.html" title="struct amiquip::Channel">Channel</a></dt><dd>Handle for an AMQP channel.</dd><dt><a class="struct" href="struct.ConfirmPayload.html" title="struct amiquip::ConfirmPayload">Confirm<wbr>Payload</a></dt><dd>Payload for a publisher confirmation message (either an <a href="enum.Confirm.html#variant.Ack">ack</a> or
+a <a href="enum.Confirm.html#variant.Nack">nack</a>) from the server.</dd><dt><a class="struct" href="struct.ConfirmSmoother.html" title="struct amiquip::ConfirmSmoother">Confirm<wbr>Smoother</a></dt><dd>Helper to smooth out of order and/or <code>multiple: true</code> publisher confirmation messages.</dd><dt><a class="struct" href="struct.Connection.html" title="struct amiquip::Connection">Connection</a></dt><dd>Handle for an AMQP connection.</dd><dt><a class="struct" href="struct.ConnectionOptions.html" title="struct amiquip::ConnectionOptions">Connection<wbr>Options</a></dt><dd>Options that control the overall AMQP connection.</dd><dt><a class="struct" href="struct.ConnectionTuning.html" title="struct amiquip::ConnectionTuning">Connection<wbr>Tuning</a></dt><dd>Tuning parameters for the amiquip client.</dd><dt><a class="struct" href="struct.Consumer.html" title="struct amiquip::Consumer">Consumer</a></dt><dd>A message consumer associated with an AMQP queue.</dd><dt><a class="struct" href="struct.ConsumerOptions.html" title="struct amiquip::ConsumerOptions">Consumer<wbr>Options</a></dt><dd>Options passed to the server when starting a consumer.</dd><dt><a class="struct" href="struct.Delivery.html" title="struct amiquip::Delivery">Delivery</a></dt><dd>A message delivered to a consumer.</dd><dt><a class="struct" href="struct.Exchange.html" title="struct amiquip::Exchange">Exchange</a></dt><dd>Handle for a declared AMQP exchange.</dd><dt><a class="struct" href="struct.ExchangeDeclareOptions.html" title="struct amiquip::ExchangeDeclareOptions">Exchange<wbr>Declare<wbr>Options</a></dt><dd>Options passed to the server when declaring an exchange.</dd><dt><a class="struct" href="struct.Get.html" title="struct amiquip::Get">Get</a></dt><dd>A message delivered in response to a <a href="struct.Queue.html#method.get"><code>get</code></a> request.</dd><dt><a class="struct" href="struct.Publish.html" title="struct amiquip::Publish">Publish</a></dt><dd>Wrapper for a message to be published.</dd><dt><a class="struct" href="struct.Queue.html" title="struct amiquip::Queue">Queue</a></dt><dd>Handle for a declared AMQP queue.</dd><dt><a class="struct" href="struct.QueueDeclareOptions.html" title="struct amiquip::QueueDeclareOptions">Queue<wbr>Declare<wbr>Options</a></dt><dd>Options passed to the server when declaring a queue.</dd><dt><a class="struct" href="struct.QueueDeleteOptions.html" title="struct amiquip::QueueDeleteOptions">Queue<wbr>Delete<wbr>Options</a></dt><dd>Options passed to the server when deleting a queue.</dd><dt><a class="struct" href="struct.Return.html" title="struct amiquip::Return">Return</a></dt><dd>An unpublished message returned to the publishing channel.</dd><dt><a class="struct" href="struct.TlsConnector.html" title="struct amiquip::TlsConnector">TlsConnector</a></dt><dd>Newtype wrapper around a <code>native_tls::TlsConnector</code> to make it usable by amiquip’s I/O loop.</dd></dl><h2 id="enums" class="section-header">Enums<a href="#enums" class="anchor">§</a></h2><dl class="item-table"><dt><a class="enum" href="enum.AmqpValue.html" title="enum amiquip::AmqpValue">Amqp<wbr>Value</a></dt><dd>Enumeration referencing the possible AMQP values depending on the types</dd><dt><a class="enum" href="enum.Auth.html" title="enum amiquip::Auth">Auth</a></dt><dd>Built-in authentication mechanisms.</dd><dt><a class="enum" href="enum.Confirm.html" title="enum amiquip::Confirm">Confirm</a></dt><dd>A publisher confirmation message from the server.</dd><dt><a class="enum" href="enum.ConnectionBlockedNotification.html" title="enum amiquip::ConnectionBlockedNotification">Connection<wbr>Blocked<wbr>Notification</a></dt><dd>Asynchronous notifications sent by the server when it temporarily blocks a connection,
+typically due to a resource alarm.</dd><dt><a class="enum" href="enum.ConsumerMessage.html" title="enum amiquip::ConsumerMessage">Consumer<wbr>Message</a></dt><dd>Messages delivered to consumers.</dd><dt><a class="enum" href="enum.Error.html" title="enum amiquip::Error">Error</a></dt><dd>Specific error cases returned by amiquip.</dd><dt><a class="enum" href="enum.ExchangeType.html" title="enum amiquip::ExchangeType">Exchange<wbr>Type</a></dt><dd>Types of AMQP exchanges.</dd></dl><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><dl class="item-table"><dt><a class="trait" href="trait.IoStream.html" title="trait amiquip::IoStream">IoStream</a></dt><dd>Combination trait for readable, writable streams that can be polled by mio.</dd><dt><a class="trait" href="trait.Sasl.html" title="trait amiquip::Sasl">Sasl</a></dt><dd>A trait encapsulating the operations required to authenticate to an AMQP server.</dd></dl><h2 id="types" class="section-header">Type Aliases<a href="#types" class="anchor">§</a></h2><dl class="item-table"><dt><a class="type" href="type.FieldTable.html" title="type amiquip::FieldTable">Field<wbr>Table</a></dt><dd>A Map&lt;String, AMQPValue&gt;</dd><dt><a class="type" href="type.Result.html" title="type amiquip::Result">Result</a></dt><dd>A type alias for handling errors throughout amiquip.</dd></dl></section></div></main></body></html>

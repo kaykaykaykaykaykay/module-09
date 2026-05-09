@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AMQPClass","AMQPError","AMQPHardError","AMQPSoftError"],"fn":["gen_class","parse_class"],"mod":["access","basic","channel","confirm","connection","constants","exchange","metadata","queue","tx"],"type":["BasicProperties"]};

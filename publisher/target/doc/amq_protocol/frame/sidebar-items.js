@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AMQPChannel","AMQPFrame","AMQPFrameType"],"mod":["generation","parsing"],"struct":["AMQPContentHeader","AMQPRawFrame"]};

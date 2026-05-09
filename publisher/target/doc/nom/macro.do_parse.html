@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`do_parse!(I-&#62;IResult&#60;I,A&#62; &#62;&#62; I-&#62;IResult&#60;I,B&#62; &#62;&#62; ... I-&#62;IResult&#60;I,X&#62; , ( O ) ) =&#62; I -&#62; IResult&#60;I, O&#62;` do_parse applies sub parsers in a sequence. it can store intermediary results and make them available for later parsers"><title>do_parse in nom - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="nom" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0 (4a4ef493e 2026-03-02)" data-channel="1.94.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">do_parse</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../nom/index.html">nom</a><span class="version">4.2.3</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">nom</a></div><h1>Macro <span class="macro">do_<wbr>parse</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/nom/sequence.rs.html#305-437">Source</a> </span></div><pre class="rust item-decl"><code>macro_rules! do_parse {
+    (__impl $i:expr, ( $($rest:expr),* )) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $submac:ident!( $($args:tt)* ) ) =&gt; { ... };
+    (__impl $i:expr, $submac:ident!( $($args:tt)* ) ) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $submac:ident!( $($args:tt)* ) ~ $($rest:tt)* ) =&gt; { ... };
+    (__impl $i:expr, $submac:ident!( $($args:tt)* ) ~ $($rest:tt)* ) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $e:ident ~ $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $e:ident ~ $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $e:ident &gt;&gt; $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $submac:ident!( $($args:tt)* ) &gt;&gt; $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $e:ident &gt;&gt; $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $submac:ident!( $($args:tt)* ) &gt;&gt; $($rest:tt)*) =&gt; { ... };
+    (__impl $i:expr, $e:ident &gt;&gt; ( $($rest:tt)* )) =&gt; { ... };
+    (__impl $i:expr, $submac:ident!( $($args:tt)* ) &gt;&gt; ( $($rest:tt)* )) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $e:ident &gt;&gt; ( $($rest:tt)* )) =&gt; { ... };
+    (__impl $i:expr, $field:ident : $submac:ident!( $($args:tt)* ) &gt;&gt; ( $($rest:tt)* )) =&gt; { ... };
+    (__finalize $i:expr, ( $o: expr )) =&gt; { ... };
+    (__finalize $i:expr, ( $($rest:tt)* )) =&gt; { ... };
+    ($i:expr, $($rest:tt)*) =&gt; { ... };
+    ($submac:ident!( $($args:tt)* ) &gt;&gt; $($rest:tt)* ) =&gt; { ... };
+    ($e:ident! &gt;&gt; $($rest:tt)* ) =&gt; { ... };
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>do_parse!(I-&gt;IResult&lt;I,A&gt; &gt;&gt; I-&gt;IResult&lt;I,B&gt; &gt;&gt; ... I-&gt;IResult&lt;I,X&gt; , ( O ) ) =&gt; I -&gt; IResult&lt;I, O&gt;</code>
+do_parse applies sub parsers in a sequence.
+it can store intermediary results and make them available
+for later parsers</p>
+<p>The input type <code>I</code> must implement <code>nom::InputLength</code>.</p>
+<p>This combinator will count how much data is consumed by every child parser
+and take it into account if there is not enough data</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>nom::be_u8;
+
+<span class="comment">// this parser implements a common pattern in binary formats,
+// the TAG-LENGTH-VALUE, where you first recognize a specific
+// byte slice, then the next bytes indicate the length of
+// the data, then you take that slice and return it
+//
+// here, we match the tag 42, take the length in the next byte
+// and store it in `length`, then use `take!` with `length`
+// to obtain the subslice that we store in `bytes`, then return
+// `bytes`
+// you can use other macro combinators inside do_parse (like the `tag`
+// one here), or a function (like `be_u8` here), but you cannot use a
+// module path (like `nom::be_u8`) there, because of limitations in macros
+</span><span class="macro">named!</span>(tag_length_value,
+  <span class="macro">do_parse!</span>(
+    <span class="macro">tag!</span>( <span class="kw-2">&amp;</span>[ <span class="number">42u8 </span>][..] ) &gt;&gt;
+    length: be_u8         &gt;&gt;
+    bytes:  <span class="macro">take!</span>(length) &gt;&gt;
+    (bytes)
+  )
+);
+
+<span class="kw">let </span>a: Vec&lt;u8&gt;        = <span class="macro">vec!</span>(<span class="number">42</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);
+<span class="kw">let </span>result_a: Vec&lt;u8&gt; = <span class="macro">vec!</span>(<span class="number">3</span>, <span class="number">4</span>);
+<span class="kw">let </span>rest_a: Vec&lt;u8&gt;   = <span class="macro">vec!</span>(<span class="number">5</span>);
+<span class="macro">assert_eq!</span>(tag_length_value(<span class="kw-2">&amp;</span>a[..]), <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span>rest_a[..], <span class="kw-2">&amp;</span>result_a[..])));
+
+<span class="comment">// here, the length is 5, but there are only 3 bytes afterwards (3, 4 and 5),
+// so the parser will tell you that you need 7 bytes: one for the tag,
+// one for the length, then 5 bytes
+</span><span class="kw">let </span>b: Vec&lt;u8&gt;     = <span class="macro">vec!</span>(<span class="number">42</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);
+<span class="macro">assert_eq!</span>(tag_length_value(<span class="kw-2">&amp;</span>b[..]), <span class="prelude-val">Err</span>(Err::Incomplete(Needed::Size(<span class="number">5</span>))));</code></pre></div>
+<p>the result is a tuple, so you can return multiple sub results, like
+this:
+<code>do_parse!(I-&gt;IResult&lt;I,A&gt; &gt;&gt; I-&gt;IResult&lt;I,B&gt; &gt;&gt; ... I-&gt;IResult&lt;I,X&gt; , ( O, P ) ) =&gt; I -&gt; IResult&lt;I, (O,P)&gt;</code></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>nom::be_u8;
+<span class="macro">named!</span>(tag_length_value&lt;(u8, <span class="kw-2">&amp;</span>[u8])&gt;,
+  <span class="macro">do_parse!</span>(
+    <span class="macro">tag!</span>( <span class="kw-2">&amp;</span>[ <span class="number">42u8 </span>][..] ) &gt;&gt;
+    length: be_u8         &gt;&gt;
+    bytes:  <span class="macro">take!</span>(length) &gt;&gt;
+    (length, bytes)
+  )
+);
+</code></pre></div></div></details></section></div></main></body></html>

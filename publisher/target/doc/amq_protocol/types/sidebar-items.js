@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AMQPType","AMQPValue"],"mod":["flags","generation","parsing"],"struct":["DecimalValue"],"type":["Boolean","ByteArray","Double","FieldArray","FieldTable","Float","LongInt","LongLongInt","LongLongUInt","LongString","LongUInt","ShortInt","ShortShortInt","ShortShortUInt","ShortString","ShortUInt","Timestamp","Void"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AMQPMethod"],"fn":["gen_channel","gen_close","gen_close_ok","gen_flow","gen_flow_ok","gen_open","gen_open_ok","get_id","parse_channel","parse_close","parse_close_ok","parse_flow","parse_flow_ok","parse_open","parse_open_ok"],"struct":["Close","CloseOk","Flow","FlowOk","Open","OpenOk"]};
