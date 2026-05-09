@@ -1,0 +1,11 @@
+[package]
+name = "subscriber"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+crosstown_bus = "1.1.2"
+futures = "0.3"
+borsh = "1.1.6"
+borsh-derive = "1.1.6"
+tokio = { version = "1.52.3", features = ["full"] }
