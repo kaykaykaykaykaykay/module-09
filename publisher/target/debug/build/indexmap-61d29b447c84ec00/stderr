@@ -1,0 +1,13 @@
+error: could not copy "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_0.autocfg_5ac0f4b5124ed271_0.71f198c57cbc84f7-cgu.0.rcgu.ll" to "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_0.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_1.autocfg_5ac0f4b5124ed271_1.b7f329858729a240-cgu.0.rcgu.ll" to "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_1.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+warning: autocfg could not probe for `std`
+error: could not copy "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_2.autocfg_5ac0f4b5124ed271_2.9af8a5936e0cb0fe-cgu.0.rcgu.ll" to "/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/indexmap-61d29b447c84ec00/out/autocfg_5ac0f4b5124ed271_2.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+

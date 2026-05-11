@@ -1,0 +1,14 @@
+/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/deps/libserde-c4b3870c405dd906.rmeta: /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/serde-a7debda7768b4d22/out/private.rs
+
+/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/deps/libserde-c4b3870c405dd906.rlib: /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/serde-a7debda7768b4d22/out/private.rs
+
+/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/deps/serde-c4b3870c405dd906.d: /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/serde-a7debda7768b4d22/out/private.rs
+
+/home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/home/khayru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/serde-a7debda7768b4d22/out/private.rs:
+
+# env-dep:OUT_DIR=/mnt/c/Users/Khayru/Documents/AdPro/Module-9/publisher/target/debug/build/serde-a7debda7768b4d22/out
