@@ -13,14 +13,16 @@ pub struct UserCreatedHandler;
 impl MessageHandler<UserCreatedEventMessage> for UserCreatedHandler {
     fn handle(&self, message: Box<UserCreatedEventMessage>) -> Result<(), HandleError> {
         let ten_millis = time::Duration::from_millis(1000);
-        // thread::sleep(ten_millis);
+        thread::sleep(ten_millis);
         println!("In YOUR_NPM Computer. Message received: {:?}", message);
         Ok(())
     }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let subscriber = CrosstownBus::new_subscriber("amqp://guest:guest@localhost:5672".to_owned())?;
+    let amqp_url = std::env::var("AMQP_URL")
+        .unwrap_or_else(|_| "amqp://guest:guest@localhost:5672".to_owned());
+    let subscriber = CrosstownBus::new_subscriber(amqp_url)?;
     _ = subscriber.subscribe(
         "user_created".to_owned(),
         UserCreatedHandler{},
