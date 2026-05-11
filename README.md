@@ -19,7 +19,7 @@ It means both the publisher and subscriber are connecting to the same RabbitMQ b
 
 ![alt text](<Screenshot 2026-05-11 204712-1.png>)
 
-![alt text](<Screenshot 2026-05-11 212118.png>)
+![alt text](<Screenshot 2026-05-11 214145.png>)
 
 ## Spike in RabbitMQ Chart
 
