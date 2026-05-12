@@ -13,8 +13,8 @@ pub struct UserCreatedHandler;
 impl MessageHandler<UserCreatedEventMessage> for UserCreatedHandler {
     fn handle(&self, message: Box<UserCreatedEventMessage>) -> Result<(), HandleError> {
         let ten_millis = time::Duration::from_millis(1000);
-        // thread::sleep(ten_millis);
-        println!("In YOUR_NPM Computer. Message received: {:?}", message);
+        thread::sleep(ten_millis);
+        println!("In Khay's Computer 2406365263. Message received: {:?}", message);
         Ok(())
     }
 }

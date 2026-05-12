@@ -23,8 +23,18 @@ It means both the publisher and subscriber are connecting to the same RabbitMQ b
 
 ## Spike in RabbitMQ Chart
 
-The spike in the RabbitMQ management console chart is directly caused by running the publisher. Each time the publisher runs, it sends 5 messages to the `user_created` queue in a burst, much faster than the subscriber can consume them. The subscriber processes each message with a 1-second delay (`thread::sleep`), so it handles roughly 1 message per second.
+The spike in the RabbitMQ management console chart is directly caused by running the publisher. Each time the publisher runs, it pushes all 5 messages into the `user_created` queue almost simultaneously in a single burst. The subscriber, however, processes messages one at a time and sequentially — so for a brief moment, messages arrive faster than they are consumed, causing the queue depth to spike upward. As the subscriber catches up, the queue drains and the chart falls back down.
 
-When the publisher is run multiple times in quick succession (e.g., 5 runs = 25 messages), all 25 messages pile up in the queue almost instantly while the subscriber can only drain them one at a time. This creates the sharp spike visible in the chart: a sudden vertical rise as the publisher floods the queue, followed by a slow, steady decline as the subscriber works through the backlog.
+Running the publisher multiple times in quick succession amplifies this effect. For example, 5 runs produce 25 messages entering the queue nearly all at once, making the spike more pronounced and the drain period longer.
 
-This demonstrates the core value of using a message broker. The publisher is completely decoupled from the subscriber's processing speed, it fires and forgets without waiting. The broker acts as a buffer, absorbing the burst of messages and delivering them to the subscriber at whatever pace it can handle. Without the broker, the publisher would either have to wait for each message to be processed (tight coupling) or messages would simply be dropped.
+This demonstrates the core value of using a message broker. The publisher is completely decoupled from the subscriber's processing speed — it fires and forgets without waiting. The broker acts as a buffer, absorbing the burst of messages and delivering them to the subscriber at whatever pace it can handle. Without the broker, the publisher would either have to wait for each message to be processed (tight coupling) or messages would simply be dropped.
+
+## Slow Subscriber Simulation
+
+![alt text](<Screenshot 2026-05-11 215431.png>)
+
+Looking at the top graph (Queued messages), you can see multiple spikes across the last minute, each spike represents one publisher run pushing 5 messages into the queue at once. The publisher was run multiple times in quick succession, producing a total of 20 messages across 4 runs (4 × 5 = 20).
+
+The current Total: 0 (Ready: 0, Unacked: 0) means the queue is now completely empty. Even though 20 messages were queued up, the subscriber processed all of them one by one. With `thread::sleep` active, the subscriber handled roughly 1 message per second, so the queue drained gradually after each burst. By the time this screenshot was taken, the subscriber had caught up and nothing remained in the queue.
+
+This is the point of using a message broker, the publisher can fire off all 20 messages instantly without caring whether the subscriber is ready, and the broker safely holds them until the subscriber processes every single one.
