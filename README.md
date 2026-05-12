@@ -38,3 +38,23 @@ Looking at the top graph (Queued messages), you can see multiple spikes across t
 The current Total: 0 (Ready: 0, Unacked: 0) means the queue is now completely empty. Even though 20 messages were queued up, the subscriber processed all of them one by one. With `thread::sleep` active, the subscriber handled roughly 1 message per second, so the queue drained gradually after each burst. By the time this screenshot was taken, the subscriber had caught up and nothing remained in the queue.
 
 This is the point of using a message broker, the publisher can fire off all 20 messages instantly without caring whether the subscriber is ready, and the broker safely holds them until the subscriber processes every single one.
+
+
+## Running 3 Subscribers
+
+![alt text](<Screenshot 2026-05-12 111621.png>)
+
+With 3 subscribers running simultaneously, the RabbitMQ chart looks completely different. The queued messages graph stays essentially flat at 0 throughout, and the Global counts show **Connections: 3, Channels: 3, Consumers: 3**. This is because RabbitMQ distributes messages across all active consumers in a round-robin fashion. When the publisher sends 5 messages, RabbitMQ splits them across the 3 subscribers — roughly 2 each with 1 left over. Each subscriber still has `thread::sleep` (1 second per message), but together they process ~3 messages per second instead of 1. The queue drains fast enough that no visible backlog builds up. This is the competing consumers pattern: adding more subscribers directly increases throughput without changing any publisher code.
+
+## Code Improvements
+
+Looking at the publisher and subscriber code, there are a few things worth improving:
+
+**Publisher**
+- The AMQP URL is hard-coded as `"amqp://guest:guest@localhost:5672"`. The subscriber already reads from the `AMQP_URL` environment variable with a fallback, the publisher should do the same for consistency and so both can be configured from a single place.
+- All five `p.send(...)` calls use `_ =` to discard the result, silently swallowing any send errors. Failed sends should at least be logged.
+
+**Subscriber**
+- The variable is named `ten_millis` but is set to `1000` milliseconds (1 full second), not 10ms. This is a misleading name that could confuse anyone reading the code.
+- `loop {}` at the end of `main` is a busy-wait, it spins the thread at full CPU doing nothing. A better alternative is `std::thread::park()`, which blocks the thread without consuming CPU.
+- Like the publisher, `_ = subscriber.subscribe(...)` silently discards the subscription error if it fails.
